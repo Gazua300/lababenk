@@ -12,10 +12,11 @@ console.log(accounts)
 		axios.get('http://localhost:3003/accounts').then(res=>{
 			setAccounts(res.data)
 		}).catch(err=>{
-			alert('Algo deu errado!')
+			console.log(err.response)
 		})
 	}
 
+	
 	useEffect(()=>{
 		getAccounts()
 	}, [])
