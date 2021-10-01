@@ -1,4 +1,5 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
+import Context from '../../global/Context'
 import axios from 'axios'
 import {url} from '../../constants/urls'
 import {Container} from './styled'
@@ -10,6 +11,7 @@ import {useHistory} from 'react-router-dom'
 
 //===================Inicio do componente funcional==========================
 const Deposit = ()=>{
+	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
 		name:'',
@@ -27,10 +29,19 @@ const Deposit = ()=>{
 
 	}, [history])
 
+
+
 	const onChange = (e)=>{
 		const {name, value} = e.target
 		setForm({...form, [name]: value})
 	}
+
+
+	const checkClient = states.accounts && states.accounts.find(client=>{
+		return Number(form.cpf) === client.cpf && form.name === client.name
+	})
+
+console.log(checkClient)
 
 	const addCash = (e)=>{
 		e.preventDefault()
@@ -38,19 +49,26 @@ const Deposit = ()=>{
 		const body = {
 			name: form.name,
 			cpf: Number(form.cpf),
-			value: form.value
+			value: Number(form.value)
 		}
 
-		axios.post(`${url}/deposit`, body).then(res=>{
-			alert(`Seu deposito de R$ ${form.value} foi efetuado com sucesso.`)
-			setForm({
-				name:'',
-				cpf:'',
-				value:''
+		if(!checkClient){
+			alert('Cliente não encontrado!')
+		}else{
+
+			axios.post(`${url}/deposit`, body).then(res=>{
+				alert(`Seu deposito de R$ ${form.value} foi efetuado com sucesso.`)
+				setForm({
+					name:'',
+					cpf:'',
+					value:''
+				})
+			}).catch(err=>{
+				console.log(err.response)
 			})
-		}).catch(err=>{
-			alert(err.response.data.message)
-		})
+			
+		}
+
 	}
 
 
@@ -62,7 +80,7 @@ const Deposit = ()=>{
 				<h3>Depositos</h3>
 				<form onSubmit={addCash}>
 					<input type='text' name='name' value={form.name} onChange={onChange}
-					 placeholder='Nome e sobrenome' required/>
+					 placeholder='Nome e sobrenome' autoFocus required/>
 					<input type='number' name='cpf' value={form.cpf} onChange={onChange}
 					 placeholder='CPF(somente números)' required/>
 					<input type='number' name='value' value={form.value} onChange={onChange}

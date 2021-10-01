@@ -95,52 +95,80 @@ app.delete('/accounts/delete/:id', async(req, res)=>{
 	}
 })
 
-//=====================================Get Balance============================
-app.post('/accounts/balance', async(req, res)=>{
+
+//-------------------------------------ACCOUNT----------------------------------
+	
+//===================================Statement=====================================
+app.get('/accounts/statement', async(req, res)=>{
 	
 	try{
 
-		const balance = await connection.raw(`select balance from labebank where cpf=${req.body.cpf}`)
+		const result = await connection('labebank_statement')
 
-		const result = balance[0]
-
-		console.log(result)
-		res.end()		
+		res.send(result)
 
 	}catch(error: any){
 		res.send({message: error.message || error.sqlMessage})
 	}
 })
 
-//=====================================Login=================================
-app.get('/')
-
-
-//-------------------------------------ACCOUNT----------------------------------
-	
-//====================================Payment(pendente)================================
-app.post('/accounts/pay', async(req, res)=>{
-	let statusCode = 404
+//=====================================Get Balance============================
+app.post('/accounts/balance', async(req, res)=>{
 	
 	try{
 
-		const {name, cpf, initialDate, value} = req.body
-		const [day, month, year] = initialDate.split('/')
-
-		const balance = await connection.raw(`select balance from labebank where cpf = ${cpf}`)
-		const clientName = await connection.raw(`select name from labebank where cpf = ${cpf}`)
-		//await connection.raw(`update labebank set balance = balance - ${req.body.value}`)
-
+		const balance = await connection.raw(`select balance from labebank where cpf=${req.body.cpf}`)
+		const result = balance[0]
 		
-		console.log(balance[0].constructor)
-		res.end()
+		res.send(result)		
+
+	}catch(error: any){
+		res.send({message: error.message || error.sqlMessage})
+	}
+})	
+
+//====================================Payment(pendente)================================
+app.post('/accounts/pay', async(req, res)=>{
+	
+	try{
+
+		const {name, cpf, initialDate, value, description} = req.body
+		const [day, month, year] = initialDate.split('/')
+		const date = new Date(`${year}-${month}-day`)
+
+		const client = await connection.raw(`select * from labebank where cpf=${cpf}`)
+
+		res.send(client[0])
 
 	}catch(error: any){
 		res.send({message: error.message})
 	}
 })
 
-//=====================================Deposito==================================
+
+//=====================================Deposito(Pendente)========================================
+app.post('/accounts/deposit', async(req, res)=>{
+	
+	try{
+
+		const d = new Date()
+
+		await connection.raw(`update labebank set balance = balance + ${req.body.value}
+		where cpf = ${req.body.cpf}`)
+
+		await connection.raw(`insert into labebank_statement(value, description, client_id, date)
+		values(${req.body.value}, 'Depósito', ${req.body.cpf}, '${d.getFullYear()}-${d.getMonth()}-${d.getDate()}')`)
+
+		res.status(200).end()
+
+	}catch(error: any){
+		res.send({message: error.message || error.sqlMessage})
+	}
+})
+
+
+
+
 
 
 //======================================Server listening===========================

@@ -19,7 +19,6 @@ const Home = ()=>{
 		cpf:''
 	})
 
-
 	useEffect(()=>{
 		const token = localStorage.getItem('token')
 
@@ -36,9 +35,9 @@ const Home = ()=>{
 	}
 
 
-	const verifyCpf = states.accounts && states.accounts.find(client=>form.cpf === client.cpf)
-
-	console.log(verifyCpf)
+	const checkClient = states.accounts && states.accounts.find(client=>{
+		return client.cpf === Number(form.cpf) && client.name === form.name
+	})		
 
 	const getBalance = (e)=>{
 		e.preventDefault()
@@ -48,14 +47,16 @@ const Home = ()=>{
 			cpf: Number(form.cpf)
 		}
 
-		
-
-		axios.post(`${url}/balance`, body).then(res=>{
-			console.log(res.data)
-			document.getElementById('result').innerHTML = `Seu saldo é ${res.data}`
-		}).catch(err=>{
-			alert(err.response.data.message)
-		})
+		if(!checkClient){
+			alert('Cliente não registrado.')
+		}else{
+			axios.post(`${url}/balance`, body).then(res=>{
+				console.log(res.data)
+				document.getElementById('result').innerHTML = `Seu saldo é ${res.data[0].balance}`
+			}).catch(err=>{
+				console.log(err.response)
+			})			
+		}
 	}
 
 //===============================Renderizaão===========================

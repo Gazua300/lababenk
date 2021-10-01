@@ -32,13 +32,11 @@ const CreateAccount = ()=>{
 		setForm({...form, [name]: value})
 	}
 	
-	console.log(form.cpf.length)
+
 	const createAccount = (e)=>{
 		e.preventDefault()
 
-		if(form.cpf.length < 11){
-			alert('CPF inválido(Numeração incompleta)')
-		}
+		
 
 		const body = {
 			name: form.name,
@@ -49,7 +47,7 @@ const CreateAccount = ()=>{
 		axios.post(`${url}/create`, body).then(res=>{
 			alert(`Cliente ${form.name} cadastrado com sucesso.`)
 		}).catch(err=>{
-			alert(err.response.data.message)
+			alert(err.response)
 		})
 	}
 //=========================Render===========================

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import {useState, useEffect} from 'react'
-import axios from 'axios'
+import {useState, useEffect, useContext} from 'react'
+import Context from '../../global/Context'
+//import axios from 'axios'
 import {useHistory, Link} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
 
@@ -39,11 +40,14 @@ const Header = styled.header`
 
 
 const Login = ()=>{
+	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
 		email:'',
 		password:''
 	})
+
+
 
 
 	useEffect(()=>{
@@ -61,20 +65,23 @@ const Login = ()=>{
 		setForm({...form, [name]: value})
 	}
 
+	const first = Math.random().toString(36).substr(2)
+	const add = Math.random().toString(36).substr(2)
+	const token = first+add
+console.log(token)
+
 	const login = (e)=>{
 		e.preventDefault()
 
-		const body = {
-			email: form.email,
-			password: form.password
-		}
-
-		axios.post('https://labeddit.herokuapp.com/users/login', body).then(res=>{
-			localStorage.setItem('token', res.data.token)
-			history.push('/balance')
-		}).catch(err=>{
-			alert('Senha ou email inválidos')
+		states.users.map(user=>{
+			if(form.email === user.email && form.password === user.password){
+				history.push('/balance')
+				localStorage.setItem('token', token)
+			}else{
+				alert('Bateu fofo!')
+			}
 		})
+		
 	}
 
 //=========================Render=======================================
@@ -83,7 +90,7 @@ const Login = ()=>{
 				<img src={BackIcon} onClick={()=> history.push('/')} alt=''/>
 			  </Header>
 			  <Container>
-				<form onSubmit={login}>
+				<form onSubmit={login} >
 				<h3>Acesse sua conta</h3>
 				<input type='email' name='email' value={form.email} onChange={onChange}
 				 placeholder='E-mail' required autoFocus/>
