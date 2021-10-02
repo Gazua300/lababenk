@@ -3,7 +3,6 @@ import Exit from '../img/exit.png'
 import Home from '../img/home.jpg'
 import {useHistory} from 'react-router-dom'
 
-
 const Containter = styled.div`
 	display: flex;
 	justify-content: space-between;

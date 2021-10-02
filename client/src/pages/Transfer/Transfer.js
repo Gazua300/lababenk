@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
+import Context from '../../global/Context'
 import {url} from '../../constants/urls'
 import {Container} from './styled'
 import Header from '../../components/Header'
@@ -9,6 +10,7 @@ import {useHistory} from 'react-router-dom'
 
 //===========================Inicio do compoente funcional=========
 const Transfer = ()=>{
+	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
 		name:'',
@@ -32,6 +34,13 @@ const Transfer = ()=>{
 		setForm({...form, [name]: value})
 	}
 
+
+	const client = states.accounts && states.accounts.find(client=>{
+		return Number(form.cpf) === client.cpf && form.name === client.name
+	})
+	const recipient = states.accounts && states.accounts.find(client=>{
+		return Number(form.cpf) === client.cpf && form.name === client.name
+	})
 	
 	const transfer = (e)=>{
 		e.preventDefault()
@@ -45,19 +54,27 @@ const Transfer = ()=>{
 			value: Number(form.value)
 		}
 
-		axios.post(`${url}/transfers`, body).then(res=>{
-			console.log(res.data)
-			alert('Transferência bem sucedida.')
-			setForm({
-				name:'',
-				cpf:'',
-				recipientName:'',
-				recipientCpf:'',
-				value:''
+		if(!client){
+			alert('Dados inválidos!')
+		}else if(!recipient){
+			alert('Dados do destinatário inválidos')
+		} else{
+
+			axios.post(`${url}/transfer`, body).then(res=>{
+				alert('Transferência bem sucedida.')
+				setForm({
+					name:'',
+					cpf:'',
+					recipientName:'',
+					recipientCpf:'',
+					value:''
+				})
+			}).catch(err=>{
+				alert(err.response.data.message)
 			})
-		}).catch(err=>{
-			alert(err.response.data.message)
-		})
+
+		}
+
 	}
 
 

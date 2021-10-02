@@ -18,3 +18,6 @@ export const Container = styled.div`
 	}
 
 `
+export const Card = styled.p`
+	margin: 10px;
+`

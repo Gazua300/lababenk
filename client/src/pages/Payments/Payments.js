@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
+import Context from '../../global/Context'
 import axios from 'axios'
 import {url} from '../../constants/urls'
 import {Container} from './styled'
@@ -9,6 +10,7 @@ import {useHistory} from 'react-router-dom'
 
 //+=======================Components==========================
 const Payments = ()=>{
+	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
 		name:'',
@@ -34,11 +36,9 @@ const Payments = ()=>{
 		setForm({...form, [name]: value})
 	}
 
-	
 
 	const pay = (e)=>{
 		e.preventDefault()
-
 		
 		const body = {
 			name: form.name,
@@ -48,18 +48,33 @@ const Payments = ()=>{
 			description: form.description
 		}
 
-		axios.post(`${url}/payments`, body).then(res=>{
-			alert('Pagamento efetuado com sucesso!')
-			setForm({
-				name:'',
-				cpf:'',
-				initialDate:'',
-				value:'',
-				description:''
-			})
-		}).catch(err=>{
-			alert(err.response.data.message)			
+		const client = states.accounts && states.accounts.find(user=>{
+			return form.name === user.name && Number(form.cpf) === user.cpf
 		})
+
+		const date = new Date(form.initialDate).getTime()
+
+		if(!client){
+			alert('Cliente não registrado. Verfique os campos e tente novamente.')
+		}else if(date < Date.now()){
+			alert('Pagamentos não podem ser agendados para uma data inferior à atual.')	
+		}else{
+
+			axios.post(`${url}/pay`, body).then(res=>{
+				alert('Pagamento efetuado com sucesso!')
+				setForm({
+					name:'',
+					cpf:'',
+					initialDate:'',
+					value:'',
+					description:''
+				})
+			}).catch(err=>{
+				alert(err.response.data.message)			
+			})
+
+		}
+
 	}
 
 //====================================Render=============================
