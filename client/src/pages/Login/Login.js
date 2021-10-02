@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import {useState, useEffect, useContext} from 'react'
 import Context from '../../global/Context'
-//import axios from 'axios'
 import {useHistory, Link} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
+import {token} from '../../constants/token'
 
 
 const Container = styled.div`
@@ -43,11 +43,9 @@ const Login = ()=>{
 	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
-		email:'',
+		cpf:'',
 		password:''
 	})
-
-
 
 
 	useEffect(()=>{
@@ -65,23 +63,25 @@ const Login = ()=>{
 		setForm({...form, [name]: value})
 	}
 
-	const first = Math.random().toString(36).substr(2)
-	const add = Math.random().toString(36).substr(2)
-	const token = first+add
-console.log(token)
 
-	const login = (e)=>{
+
+	const register = (e)=>{
 		e.preventDefault()
 
-		states.users.map(user=>{
-			if(form.email === user.email && form.password === user.password){
-				history.push('/balance')
-				localStorage.setItem('token', token)
-			}else{
-				alert('Bateu fofo!')
-			}
+		const client = states.accounts && states.accounts.find(user=>{
+			return user.cpf === Number(form.cpf)
 		})
-		
+		const login = states.users && states.users.find(user=>{
+			return user.password === form.password
+		})
+
+		if(!client || !login){
+			alert('Dados inválidos. Por favor cheque os campos e tente novamente.')
+		}else{
+			localStorage.setItem('token', token)
+			history.push('/balance')
+		}
+				
 	}
 
 //=========================Render=======================================
@@ -90,15 +90,15 @@ console.log(token)
 				<img src={BackIcon} onClick={()=> history.push('/')} alt=''/>
 			  </Header>
 			  <Container>
-				<form onSubmit={login} >
+				<form onSubmit={register} >
 				<h3>Acesse sua conta</h3>
-				<input type='email' name='email' value={form.email} onChange={onChange}
-				 placeholder='E-mail' required autoFocus/>
+				<input type='number' name='cpf' value={form.cpf} onChange={onChange}
+				 placeholder='CPF(somente números)' required autoFocus/>
 				<input type='password' name='password' value={form.password} onChange={onChange}
 				 placeholder='Senha' required />
 				<button>Acessar</button>
 				</form>
-				<div>Clique <Link to='/signup'>aqui</Link> para se cadastrar.</div>
+				<div>Clique <Link to='/signup'>aqui</Link> para abrir sua conta.</div>
 			  </Container>
 		  </div>
 }

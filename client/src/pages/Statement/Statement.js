@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react'
-import {Container} from './styled'
+import {useState, useEffect, useContext} from 'react'
+import Context from '../../global/Context'
+import {Container, Card} from './styled'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import {useHistory} from 'react-router-dom'
@@ -11,6 +12,7 @@ import axios from 'axios'
 
 //==========================Component=======================
 const Statement = ()=>{
+	const {states} = useContext(Context)
 	const history = useHistory()
 	const [transaction, setTransaction] = useState([])
 	const [form, setForm] = useState({
@@ -18,7 +20,7 @@ const Statement = ()=>{
 		cpf:''
 	})
 
-console.log(transaction)
+
 	useEffect(()=>{
 		const token = localStorage.getItem('token')
 
@@ -35,6 +37,9 @@ console.log(transaction)
 	}
 
 
+	const client = states.accounts && states.accounts.find(client=>{
+		return Number(form.cpf) === client.cpf && form.name === client.name
+	})
 	
 	const statement = (e)=>{
 		e.preventDefault()
@@ -44,12 +49,19 @@ console.log(transaction)
 			cpf: Number(form.cpf)
 		}
 
-		axios.post(`${url}/statement`, body).then(res=>{
-			console.log(res.data)
-			setTransaction(res.data)
-		}).catch(err=>{
-			alert(err.response.data.message)
-		})
+		if(!client){
+			alert('Dados inválidos!')
+		}else{
+
+			axios.post(`${url}/statement`, body).then(res=>{
+				console.log(res.data)
+				setTransaction(res.data)
+			}).catch(err=>{
+				alert(err.response.data.message)
+			})
+
+		}
+
 	}
 	
 
@@ -65,10 +77,10 @@ console.log(transaction)
 				 type='number' min='0' placeholder='CPF(somente números)'required/>
 				<button>Consultar</button>
 				{transaction && transaction.map(state=>{
-					return <p><b>Valor: </b>{state.value}<br/>
+					return <Card><b>Valor: </b>{state.value}<br/>
 							  <b>Data: </b>{state.date}<br/>
 							  <b>Descrição: </b>{state.description}<hr/>
-						   </p>
+						   </Card>
 				})}
 			</form>
 		   </Container>

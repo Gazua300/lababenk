@@ -41,8 +41,6 @@ const Deposit = ()=>{
 		return Number(form.cpf) === client.cpf && form.name === client.name
 	})
 
-console.log(checkClient)
-
 	const addCash = (e)=>{
 		e.preventDefault()
 

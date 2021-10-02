@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
+import {url} from '../../constants/urls'
 
 
 
@@ -43,20 +44,12 @@ const Login = ()=>{
 	const history = useHistory()
 	const [form, setForm] = useState({
 		name:'',
+		cpf:'',
 		email:'',
+		initialDate:'',
 		password:'',
 		confPassword:''
 	})
-
-
-	useEffect(()=>{
-		const token = localStorage.getItem('token')
-
-		if(token !== null){
-			history.push('/')
-		}
-
-	}, [history])
 
 
 	const onChange = (e)=>{
@@ -70,22 +63,25 @@ const Login = ()=>{
 		e.preventDefault()
 
 		const body = {
-			username: form.name,
+			name: form.name,
+			cpf: Number(form.cpf),
 			email: form.email,
+			initialDate: form.initialDate,
 			password: form.password
 		}
 
-		if(form.password !== form.confPassword){
-			alert('As senhas não são as mesmas!')
+		if(form.cpf.length < 10){
+			alert('Numeração do CPF inválida.!')
 		}else{
-			axios.post('https://labeddit.herokuapp.com/users/signup', body).then(res=>{
-				alert(`Cliente ${form.name} cadastrado com sucesso.\n Apesar de ter se cadastrado ainda precisa abrir uma conta para realizar transações.`)
+			axios.post(`${url}/create`, body).then(res=>{
+				console.log(res.data)
 				history.push('/login')
 			}).catch(err=>{
-				alert(err.response.data)
+				alert(err.response.data.message)
 			})			
-		  }		
 		}
+	
+	}
 
 //=========================Render=======================================
 	return<div>
@@ -97,8 +93,12 @@ const Login = ()=>{
 			<form onSubmit={signup}>
 				<input type='text' name='name' value={form.name} onChange={onChange}
 				 placeholder='Nome de usuário' autoFocus required/>
+				<input type='number' name='cpf' value={form.cpf} onChange={onChange}
+				 placeholder='CPF(somente números)' required/>
 				<input type='email' name='email' value={form.email} onChange={onChange}
 				 placeholder='E-mail' required/>
+				<input type='date' name='initialDate' value={form.initialDate} onChange={onChange}
+				 required/>
 				<input type='password' name='password' value={form.password} onChange={onChange}
 				 placeholder='Senha' required/>
 				<input type='password' name='confPassword' value={form.confPassword} onChange={onChange}
