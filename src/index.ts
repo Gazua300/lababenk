@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import {connection} from '../connection/connection'
+import {connection} from './connection/connection'
 
 const app = express()
 
@@ -11,7 +11,7 @@ app.use(cors())
 
 //=================================Show clients============================
 app.get('/accounts', async(req, res)=>{
-	
+
 	try{
 
 		const result = await connection('labebank')
@@ -25,7 +25,7 @@ app.get('/accounts', async(req, res)=>{
 //=================================Create clients===========================
 app.post('/accounts/create', async(req, res)=>{
 	let statusCode = 404
-	
+
 	try{
 
 		const {name, cpf, initialDate} = req.body
@@ -39,7 +39,7 @@ app.post('/accounts/create', async(req, res)=>{
 			statusCode = 401
 			throw new Error('Necessário ser maior de idade!')
 
-		}else{			
+		}else{
 
 			await connection('labebank').insert({
 				name,
@@ -48,7 +48,7 @@ app.post('/accounts/create', async(req, res)=>{
 				balance: 0,
 			})
 
-			res.send('Created')		
+			res.send('Created')
 
 		}
 
@@ -78,12 +78,12 @@ app.post('/accounts/edit/:id', async(req, res)=>{
 
 	}catch(error: any){
 		res.send({message: error.message || error.sqlMessage})
-	}	
+	}
 })
 
 //==================================Delete client===========================
 app.delete('/accounts/delete/:id', async(req, res)=>{
-	
+
 	try{
 
 		await connection('labebank').delete().where({id: req.params.id})
@@ -97,10 +97,10 @@ app.delete('/accounts/delete/:id', async(req, res)=>{
 
 
 //-------------------------------------ACCOUNT----------------------------------
-	
+
 //===================================Statement=====================================
 app.get('/accounts/statement', async(req, res)=>{
-	
+
 	try{
 
 		const result = await connection('labebank_statement')
@@ -114,22 +114,22 @@ app.get('/accounts/statement', async(req, res)=>{
 
 //=====================================Get Balance============================
 app.post('/accounts/balance', async(req, res)=>{
-	
+
 	try{
 
 		const balance = await connection.raw(`select balance from labebank where cpf=${req.body.cpf}`)
 		const result = balance[0]
-		
-		res.send(result)		
+
+		res.send(result)
 
 	}catch(error: any){
 		res.send({message: error.message || error.sqlMessage})
 	}
-})	
+})
 
 //====================================Payment(pendente)================================
 app.post('/accounts/pay', async(req, res)=>{
-	
+
 	try{
 
 		const {name, cpf, initialDate, value, description} = req.body
@@ -148,7 +148,7 @@ app.post('/accounts/pay', async(req, res)=>{
 
 //=====================================Deposito(Pendente)========================================
 app.post('/accounts/deposit', async(req, res)=>{
-	
+
 	try{
 
 		const d = new Date()

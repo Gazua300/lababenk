@@ -15,4 +15,4 @@ export const connection = knex({
 		}
 	})
 
-	console.log('Connected to database')
+	
