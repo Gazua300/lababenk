@@ -12,7 +12,7 @@ export const getBalance = async(req:Request, res:Response):Promise<void>=>{
 
     if(!name || !cpf){
       statusCode = 401
-      throw new Error('Preencha o campo')
+      throw new Error('Preencha os campos')
     }
 
 
