@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ---
-POST http://localhost:3003/accounts/statement
+POST https://mypersonaldeploys.herokuapp.com/accounts/balance
 Content-Type: application/json
 
 {
