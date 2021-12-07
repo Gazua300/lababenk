@@ -50,7 +50,7 @@ Content-Type: application/json
 {
   "name": "Vanires",
   "cpf": "1234567892",
-  "value": 80
+  "value": 100
 }
 
 ---

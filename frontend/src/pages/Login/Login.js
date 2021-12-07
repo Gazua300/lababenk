@@ -63,7 +63,7 @@ const Login = ()=>{
 			password: form.password
 		}
 		axios.post(`${url}/accounts/login`, body).then(res=>{
-			history.push('/balance')
+			console.log(res.data)
 		}).catch(err=>{
 			alert(err.response.data)
 		})
