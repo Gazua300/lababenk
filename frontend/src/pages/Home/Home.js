@@ -20,9 +20,8 @@ const Container = styled.div`
 		cursor: pointer;
 		&:hover{
 			transform: scale(1.02)
-		}		
+		}
 	}
-	
 `
 
 //===============================Component==========================

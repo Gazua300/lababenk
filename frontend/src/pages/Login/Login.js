@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import {useState, useEffect, useContext} from 'react'
-import Context from '../../global/Context'
+import {useState} from 'react'
 import {useHistory, Link} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
-import {token} from '../../constants/token'
+import { url } from '../../constants/urls'
+import axios from 'axios'
 
 
 const Container = styled.div`
@@ -40,22 +40,12 @@ const Header = styled.header`
 
 
 const Login = ()=>{
-	const {states} = useContext(Context)
 	const history = useHistory()
 	const [form, setForm] = useState({
 		cpf:'',
 		password:''
 	})
 
-
-	useEffect(()=>{
-		const token = localStorage.getItem('token')
-
-		if(token !== null){
-			history.push('/balance')
-		}
-
-	}, [history])
 
 
 	const onChange = (e)=>{
@@ -68,20 +58,16 @@ const Login = ()=>{
 	const register = (e)=>{
 		e.preventDefault()
 
-		const client = states.accounts && states.accounts.find(user=>{
-			return user.cpf === Number(form.cpf)
-		})
-		const login = states.users && states.users.find(user=>{
-			return user.password === form.password
+		const body = {
+			cpf: form.cpf,
+			password: form.password
+		}
+		axios.post(`${url}/accounts/login`, body).then(res=>{
+			history.push('/balance')
+		}).catch(err=>{
+			alert(err.response.data)
 		})
 
-		if(!client || !login){
-			alert('Dados inválidos. Por favor cheque os campos e tente novamente.')
-		}else{
-			localStorage.setItem('token', token)
-			history.push('/balance')
-		}
-				
 	}
 
 //=========================Render=======================================

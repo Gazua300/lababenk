@@ -50,6 +50,7 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
     }
 
     const hash = new Authenticate().hash(password)
+    const token = new Authenticate().token(cpf)
 
 		await connection('labebank').insert({
 			name,
@@ -61,7 +62,7 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 		})
 
 
-    res.status(200).send(`Conta do cliente ${name} criada com sucesso.`)
+    res.status(200).send(token)
 	}catch(error: any){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}

@@ -26,6 +26,7 @@ export const login =  async(req:Request, res:Response):Promise<void>=>{
     }
 
     const compare = new Authenticate().compare(password, client.password)
+    const token = new Authenticate().token(cpf)
 
 
     if(!compare){
@@ -33,7 +34,7 @@ export const login =  async(req:Request, res:Response):Promise<void>=>{
       throw new Error('Cliente não encontrado!')
     }
 
-    res.status(200).send('Logado!')
+    res.status(200).send(token)
   }catch(error:any){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }

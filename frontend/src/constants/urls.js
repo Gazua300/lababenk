@@ -1,1 +1,1 @@
-export const url = 'http://localhost:3003/accounts'
+export const url = 'https://mypersonaldeploys.herokuapp.com'

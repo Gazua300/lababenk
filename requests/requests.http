@@ -54,3 +54,15 @@ Content-Type: application/json
   "cpf": 1234567892,
   "password": "senha"
 }
+
+---
+POST http://localhost:3003/accounts/transfer
+Content-Type: application/json
+
+{
+  "name":"Flamarion",
+  "cpf": 1234567891,
+  "recipientName": "Vanires",
+  "recipientCpf": 1234567892,
+  "value": 100
+}

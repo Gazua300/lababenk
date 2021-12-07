@@ -19,16 +19,16 @@ const Home = ()=>{
 		cpf:''
 	})
 
-	useEffect(()=>{
-		const token = localStorage.getItem('token')
+	// useEffect(()=>{
+	// 	const token = localStorage.getItem('token')
+	//
+	// 	if(token === null){
+	// 		history.push('/')
+	// 	}
+	//
+	// }, [history])
 
-		if(token === null){
-			history.push('/')
-		}
 
-	}, [history])
-
-	
 	const onChange = (e)=>{
 		const {name, value} = e.target
 		setForm({...form, [name]: value})
@@ -37,11 +37,11 @@ const Home = ()=>{
 
 	const checkClient = states.accounts && states.accounts.find(client=>{
 		return client.cpf === Number(form.cpf) && client.name === form.name
-	})		
+	})
 
 	const getBalance = (e)=>{
 		e.preventDefault()
-		
+
 		const body = {
 			name: form.name,
 			cpf: Number(form.cpf)
@@ -55,13 +55,13 @@ const Home = ()=>{
 				document.getElementById('result').innerHTML = `Seu saldo é ${res.data[0].balance}`
 			}).catch(err=>{
 				console.log(err.response)
-			})			
+			})
 		}
 	}
 
 //===============================Renderizaão===========================
 	return<div>
-		  <Header/> 
+		  <Header/>
 		  <Container>
 				<h3>Consulta de saldo</h3>
 			<form onSubmit={getBalance}>

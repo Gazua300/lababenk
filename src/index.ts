@@ -7,6 +7,7 @@ import { getBalance } from './endpoints/getBalance'
 import { payment } from './endpoints/payment'
 import { deposito } from './endpoints/deposito'
 import { login } from './endpoints/login'
+import { transfer } from './endpoints/transfer'
 
 
 const app = express()
@@ -23,7 +24,7 @@ app.post('/accounts/balance', getBalance)
 app.post('/accounts/payment', payment)
 app.post('/accounts/deposit', deposito)
 app.post('/accounts/login', login)
-
+app.post('/accounts/transfer', transfer)
 
 
 
