@@ -14,14 +14,21 @@ Content-Type: application/json
 }
 
 ---
-GET http://localhost:3003/accounts/statement
+POST http://localhost:3003/accounts/statement
+Content-Type: application/json
+
+{
+  "name": "Vanires",
+  "cpf": "1234567892"
+}
 
 ---
 POST http://localhost:3003/accounts/balance
 Content-Type: application/json
 
 {
-  "cpf": "12346"
+  "name": "Vanires",
+  "cpf": "1234567892"
 }
 
 ---

@@ -18,7 +18,7 @@ app.use(cors())
 
 
 app.get('/accounts', showClients)
-app.get('/accounts/statement', getStatement)
+app.post('/accounts/statement', getStatement)
 app.post('/accounts/create', createClient)
 app.post('/accounts/balance', getBalance)
 app.post('/accounts/payment', payment)

@@ -3,13 +3,38 @@ import { Request, Response } from 'express'
 
 
 export const getStatement = async(req:Request, res:Response):Promise<void>=>{
+  let statusCode = 400
+
   try{
 
-		const result = await connection('labebank_statement')
+	   const { name, cpf } = req.body
 
-		res.send(result)
+     if(!name || !cpf){
+       statusCode = 401
+       throw new Error('Preencha os campos')
+     }
 
+     const [client] = await connection('labebank').where({
+       cpf
+     })
+
+     if(!client){
+       statusCode = 404
+       throw new Error('Cliente não encontrado!')
+     }
+
+     if(name !== client.name){
+       statusCode = 403
+       throw new Error('Dados inválidos!')
+     }
+
+
+     const statement = await connection('labebank_statement').where({
+       client_id: cpf
+     })
+
+     res.status(200).send(statement)
 	}catch(error: any){
-		res.send({message: error.message || error.sqlMessage})
+		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}
 }

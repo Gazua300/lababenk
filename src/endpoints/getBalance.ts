@@ -4,14 +4,35 @@ import { Request, Response } from 'express'
 
 
 export const getBalance = async(req:Request, res:Response):Promise<void>=>{
+  let statusCode = 400
+
   try{
 
-		const balance = await connection.raw(`select balance from labebank where cpf=${req.body.cpf}`)
-		const result = balance[0]
+    const { name, cpf } = req.body
 
-		res.status(200).send(result)
+    if(!name || !cpf){
+      statusCode = 401
+      throw new Error('Preencha o campo')
+    }
 
+
+    const [client] = await connection('labebank').where({
+      cpf
+    })
+
+    if(!client){
+      statusCode = 404
+      throw new Error('Cliente não encontrado!')
+    }
+
+    if(name !== client.name){
+      statusCode = 401
+      throw new Error('Dados inválidos!')
+    }
+
+
+		res.status(200).send(`Seu saldo é ${client.balance}`)
 	}catch(error: any){
-		res.status(400).send({message: error.message || error.sqlMessage})
+		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}
 }
