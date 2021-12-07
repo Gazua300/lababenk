@@ -20,7 +20,7 @@ export const deposito = async(req:Request, res:Response)=>{
 
     if(!user){
       statusCode = 404
-      throw new Error('Cliente não encontrado')
+      throw new Error('Cliente não encontrado!')
     }
 
     if(user.name !== name){
