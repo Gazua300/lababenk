@@ -6,6 +6,8 @@ import { getStatement } from './endpoints/getStatement'
 import { getBalance } from './endpoints/getBalance'
 import { payment } from './endpoints/payment'
 import { deposito } from './endpoints/deposito'
+import { login } from './endpoints/login'
+
 
 const app = express()
 
@@ -20,6 +22,7 @@ app.post('/accounts/create', createClient)
 app.post('/accounts/balance', getBalance)
 app.post('/accounts/payment', payment)
 app.post('/accounts/deposit', deposito)
+app.post('/accounts/login', login)
 
 
 

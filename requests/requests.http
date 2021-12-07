@@ -5,8 +5,11 @@ POST http://localhost:3003/accounts/create
 Content-Type: application/json
 
 {
-  "name": "",
-  "cpf": "12346",
+  "name": "Fulano",
+  "cpf": "1234567890",
+  "email": "gazua@email.com",
+  "password": "senha",
+  "passwordConf": "senha",
   "initialDate": "04/06/1999"
 }
 
@@ -41,4 +44,13 @@ Content-Type: application/json
   "name": "Vanires",
   "cpf": "1234567892",
   "value": 80
+}
+
+---
+POST http://localhost:3003/accounts/login
+Content-Type: application/json
+
+{
+  "cpf": 1234567892,
+  "password": "senha"
 }
