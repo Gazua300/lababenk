@@ -5,7 +5,7 @@ import { createClient } from './endpoints/createClient'
 import { getStatement } from './endpoints/getStatement'
 import { getBalance } from './endpoints/getBalance'
 import { payment } from './endpoints/payment'
-import { deposito } from './endpoints/deposito'
+import { deposit } from './endpoints/deposit'
 import { login } from './endpoints/login'
 import { transfer } from './endpoints/transfer'
 
@@ -22,7 +22,7 @@ app.post('/accounts/statement', getStatement)
 app.post('/accounts/create', createClient)
 app.post('/accounts/balance', getBalance)
 app.post('/accounts/payment', payment)
-app.post('/accounts/deposit', deposito)
+app.post('/accounts/deposit', deposit)
 app.post('/accounts/login', login)
 app.post('/accounts/transfer', transfer)
 

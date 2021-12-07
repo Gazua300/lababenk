@@ -2,7 +2,7 @@ import { connection } from '../connection/connection'
 import { Request, Response } from 'express'
 
 
-export const deposito = async(req:Request, res:Response)=>{
+export const deposit = async(req:Request, res:Response)=>{
   let statusCode = 400
 
   try{
