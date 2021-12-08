@@ -59,7 +59,7 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 			cpf,
       email,
 			birth_date: birthDate,
-			balance: 0,
+			balance: 660,
       password: hash
 		})
 
