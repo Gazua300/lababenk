@@ -31,6 +31,11 @@ export const payment = async(req:Request, res:Response):Promise<void>=>{
       throw new Error('Cliente não encontrado.')
     }
 
+    if(name !== user.name){
+      statusCode = 401
+      throw new Error('Dados inválidos!')
+    }
+
 
     if(value > user.balance){
       statusCode = 403

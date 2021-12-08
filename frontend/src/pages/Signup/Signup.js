@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
@@ -52,16 +52,6 @@ const Login = ()=>{
 	})
 
 
-	useEffect(()=>{
-		const token = localStorage.getItem('token')
-
-		if(token){
-			history.push('/balance')
-		}
-
-	}, [history])
-
-
 	const onChange = (e)=>{
 		const {name, value} = e.target
 		setForm({...form, [name]: value})
@@ -96,7 +86,7 @@ const Login = ()=>{
 //=========================Render=======================================
 	return<div>
 			<Header>
-				<img src={BackIcon} onClick={()=> history.push('/login')} alt=''/>
+				<img src={BackIcon} onClick={()=> history.goBack()} alt=''/>
 			</Header>
 		  <Container>
 			<h3>Cadastre-se</h3>

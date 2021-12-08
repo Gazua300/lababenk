@@ -1,6 +1,5 @@
 import {Switch, Route} from 'react-router-dom'
 import Balance from '../pages/Balance/Balance'
-import CreateAccount from '../pages/CreateAccount/CreateAccount'
 import Deposit from '../pages/Deposit/Deposit'
 import Transfer from '../pages/Transfer/Transfer'
 import Payments from '../pages/Payments/Payments'
@@ -25,9 +24,6 @@ const Routes = ()=>{
 				</Route>
 				<Route exact path='/balance'>
 					<Balance/>
-				</Route>
-				<Route exact path='/register'>
-					<CreateAccount/>
 				</Route>
 				<Route exact path='/deposit'>
 					<Deposit/>
