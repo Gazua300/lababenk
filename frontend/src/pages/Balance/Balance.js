@@ -35,10 +35,6 @@ const Home = ()=>{
 	}
 
 
-	const checkClient = states.accounts && states.accounts.find(client=>{
-		return client.cpf === Number(form.cpf) && client.name === form.name
-	})
-
 	const getBalance = (e)=>{
 		e.preventDefault()
 
@@ -47,16 +43,13 @@ const Home = ()=>{
 			cpf: Number(form.cpf)
 		}
 
-		if(!checkClient){
-			alert('Cliente não registrado.')
-		}else{
-			axios.post(`${url}/balance`, body).then(res=>{
-				console.log(res.data)
-				document.getElementById('result').innerHTML = `Seu saldo é ${res.data[0].balance}`
-			}).catch(err=>{
-				console.log(err.response)
-			})
-		}
+		axios.post(`${url}/accounts/balance`, body).then(res=>{
+			console.log(res.data)
+			document.getElementById('result').innerHTML = `Seu saldo é ${res.data[0].balance}`
+		}).catch(err=>{
+			console.log(err.response)
+		})
+
 	}
 
 //===============================Renderizaão===========================

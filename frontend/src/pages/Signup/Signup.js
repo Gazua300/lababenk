@@ -58,7 +58,7 @@ const Login = ()=>{
 	}
 
 
-	
+
 	const signup = (e)=>{
 		e.preventDefault()
 
@@ -73,14 +73,14 @@ const Login = ()=>{
 		if(form.cpf.length < 10){
 			alert('Numeração do CPF inválida.!')
 		}else{
-			axios.post(`${url}/create`, body).then(res=>{
+			axios.post(`${url}/accounts/create`, body).then(res=>{
 				console.log(res.data)
 				history.push('/login')
 			}).catch(err=>{
-				alert(err.response.data.message)
-			})			
+				alert(err.response.data)
+			})
 		}
-	
+
 	}
 
 //=========================Render=======================================
@@ -88,7 +88,7 @@ const Login = ()=>{
 			<Header>
 				<img src={BackIcon} onClick={()=> history.push('/login')} alt=''/>
 			</Header>
-		  <Container>		  			
+		  <Container>
 			<h3>Cadastre-se</h3>
 			<form onSubmit={signup}>
 				<input type='text' name='name' value={form.name} onChange={onChange}

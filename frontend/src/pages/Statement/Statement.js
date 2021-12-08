@@ -37,10 +37,6 @@ const Statement = ()=>{
 	}
 
 
-	const client = states.accounts && states.accounts.find(client=>{
-		return Number(form.cpf) === client.cpf && form.name === client.name
-	})
-
 	const statement = (e)=>{
 		e.preventDefault()
 
@@ -49,18 +45,12 @@ const Statement = ()=>{
 			cpf: Number(form.cpf)
 		}
 
-		if(!client){
-			alert('Dados inválidos!')
-		}else{
-
-			axios.post(`${url}/statement`, body).then(res=>{
-				console.log(res.data)
-				setTransaction(res.data)
-			}).catch(err=>{
-				alert(err.response.data.message)
-			})
-
-		}
+		axios.post(`${url}/accounts/tatement`, body).then(res=>{
+			console.log(res.data)
+			setTransaction(res.data)
+		}).catch(err=>{
+			alert(err.response.data.message)
+		})
 
 	}
 

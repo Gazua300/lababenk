@@ -37,10 +37,6 @@ const Deposit = ()=>{
 	}
 
 
-	const checkClient = states.accounts && states.accounts.find(client=>{
-		return Number(form.cpf) === client.cpf && form.name === client.name
-	})
-
 	const addCash = (e)=>{
 		e.preventDefault()
 
@@ -50,22 +46,16 @@ const Deposit = ()=>{
 			value: Number(form.value)
 		}
 
-		if(!checkClient){
-			alert('Cliente não encontrado!')
-		}else{
-
-			axios.post(`${url}/deposit`, body).then(res=>{
-				alert(`Seu deposito de R$ ${form.value} foi efetuado com sucesso.`)
-				setForm({
-					name:'',
-					cpf:'',
-					value:''
-				})
-			}).catch(err=>{
-				console.log(err.response)
+		axios.post(`${url}/accounts/deposit`, body).then(res=>{
+			alert(`Seu deposito de R$ ${form.value} foi efetuado com sucesso.`)
+			setForm({
+				name:'',
+				cpf:'',
+				value:''
 			})
-
-		}
+		}).catch(err=>{
+			console.log(err.response)
+		})
 
 	}
 

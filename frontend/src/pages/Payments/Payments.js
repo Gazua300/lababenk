@@ -48,32 +48,18 @@ const Payments = ()=>{
 			description: form.description
 		}
 
-		const client = states.accounts && states.accounts.find(user=>{
-			return form.name === user.name && Number(form.cpf) === user.cpf
-		})
-
-		const date = new Date(form.initialDate).getTime()
-
-		if(!client){
-			alert('Cliente não registrado. Verfique os campos e tente novamente.')
-		}else if(date < Date.now()){
-			alert('Pagamentos não podem ser agendados para uma data inferior à atual.')
-		}else{
-
-			axios.post(`${url}/pay`, body).then(res=>{
-				alert('Pagamento efetuado com sucesso!')
-				setForm({
-					name:'',
-					cpf:'',
-					initialDate:'',
-					value:'',
-					description:''
-				})
-			}).catch(err=>{
-				alert(err.response.data.message)
+		axios.post(`${url}/accounts/payment`, body).then(res=>{
+			alert('Pagamento efetuado com sucesso!')
+			setForm({
+				name:'',
+				cpf:'',
+				initialDate:'',
+				value:'',
+				description:''
 			})
-
-		}
+		}).catch(err=>{
+			alert(err.response.data.message)
+		})
 
 	}
 
