@@ -27,8 +27,8 @@ POST http://localhost:3003/accounts/statement
 Content-Type: application/json
 
 {
-  "name": "Vanires",
-  "cpf": "1234567892"
+  "name": "Flamarion",
+  "cpf": "1234567891"
 }
 
 ---

@@ -33,6 +33,7 @@ export const getStatement = async(req:Request, res:Response):Promise<void>=>{
        client_id: cpf
      })
 
+     
      res.status(200).send(statement)
 	}catch(error: any){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
