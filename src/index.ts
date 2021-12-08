@@ -10,6 +10,7 @@ import { login } from './endpoints/login'
 import { transfer } from './endpoints/transfer'
 
 
+
 const app = express()
 
 app.use(express.json())
@@ -25,6 +26,7 @@ app.post('/accounts/payment', payment)
 app.post('/accounts/deposit', deposit)
 app.post('/accounts/login', login)
 app.post('/accounts/transfer', transfer)
+
 
 
 

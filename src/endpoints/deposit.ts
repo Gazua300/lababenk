@@ -1,5 +1,6 @@
 import { connection } from '../connection/connection'
 import { Request, Response } from 'express'
+import { Authenticate } from '../services/Authenticate'
 
 
 export const deposit = async(req:Request, res:Response)=>{
@@ -35,7 +36,10 @@ export const deposit = async(req:Request, res:Response)=>{
       cpf
     })
 
+    const id = new Authenticate().generateId()
+
     await connection('labebank_statement').insert({
+      id,
       value,
       date: new Date(),
       description: 'Deposito',

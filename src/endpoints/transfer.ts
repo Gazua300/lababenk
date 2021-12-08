@@ -1,5 +1,6 @@
 import { connection } from '../connection/connection'
 import { Request, Response } from 'express'
+import { Authenticate } from '../services/Authenticate'
 
 
 export const transfer = async(req:Request, res:Response):Promise<void>=>{
@@ -45,7 +46,7 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
       throw new Error('Dados inválidos!')
     }
 
-    
+
 
     await connection('labebank').update({
       balance: client.balance - value
@@ -59,7 +60,10 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
       cpf: recipientCpf
     })
 
+    const id = new Authenticate().generateId()
+
     await connection('labebank_statement').insert({
+      id,
       value,
       date: new Date(),
       description: 'Transferência',

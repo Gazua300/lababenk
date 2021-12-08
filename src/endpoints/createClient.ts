@@ -49,10 +49,12 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
       throw new Error('As senhas não correspondem!')
     }
 
+    const id = new Authenticate().generateId()
     const hash = new Authenticate().hash(password)
-    const token = new Authenticate().token(cpf)
+    const token = new Authenticate().token(id)
 
 		await connection('labebank').insert({
+      id,
 			name,
 			cpf,
       email,

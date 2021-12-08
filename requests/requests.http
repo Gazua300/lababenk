@@ -5,12 +5,12 @@ POST http://localhost:3003/accounts/create
 Content-Type: application/json
 
 {
-  "name": "Fulano",
-  "cpf": "1234567890",
-  "email": "gazua@email.com",
+  "name": "Vanires",
+  "cpf": "1234567892",
+  "email": "nena_festa@gmail.com",
   "password": "senha",
   "passwordConf": "senha",
-  "initialDate": "04/06/1999"
+  "initialDate": "1964-03-26"
 }
 
 ---
@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ---
-POST http://localhost:3003/accounts/login
+POST https://mypersonaldeploys.herokuapp.com/accounts/login
 Content-Type: application/json
 
 {

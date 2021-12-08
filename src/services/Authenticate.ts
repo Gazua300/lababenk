@@ -1,11 +1,16 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { config } from "dotenv"
+import { v4 } from 'uuid'
 
 config()
 
 
 export class Authenticate {
+  generateId = ()=>{
+    return v4()
+  }
+
   token = (payload:string)=>{
     return jwt.sign(
       { payload },
