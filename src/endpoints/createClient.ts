@@ -64,7 +64,7 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 		})
 
 
-    res.status(200).send(token)
+    res.status(200).send({ email, token: token})
 	}catch(error: any){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}

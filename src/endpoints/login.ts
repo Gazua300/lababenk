@@ -34,7 +34,7 @@ export const login =  async(req:Request, res:Response):Promise<void>=>{
       throw new Error('Cliente não encontrado!')
     }
 
-    res.status(200).send(token)
+    res.status(200).send({client.email, token: token})
   }catch(error:any){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }
