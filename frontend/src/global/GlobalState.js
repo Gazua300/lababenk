@@ -12,7 +12,7 @@ const GlobalState = (props)=>{
 	}, [])
 
 	const getAccounts = ()=>{
-		axios.get('https://mypersonaldeploys.herokuapp.com/accounts').then(res=>{
+		axios.get('http://localhost:3003/accounts').then(res=>{
 			setAccounts(res.data)
 		}).catch(err=>{
 			console.log(err.response)

@@ -4,7 +4,7 @@ import { Authenticate } from '../services/Authenticate'
 
 
 export const createClient = async(req:Request, res:Response):Promise<void>=>{
-  let statusCode = 400
+  var statusCode = 400
 
 	try{
 
@@ -25,6 +25,15 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 			throw new Error('Necessário ser maior de idade!')
 
 		}
+
+    var arrCpf = String(cpf).split('').map(num=>{
+      return Number(num)
+    })
+
+    if(arrCpf.length !== 11){
+      statusCode = 403
+      throw new Error('CPF inválido!')
+    }
 
     const [user] = await connection('labebank').where({
       cpf
