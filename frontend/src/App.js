@@ -1,5 +1,6 @@
 import {BrowserRouter} from 'react-router-dom'
-import Routes from './routes/Routes'
+import GlobalState from './global/GlobalState'
+import Router from './routes/Routes'
 import {createGlobalStyle} from 'styled-components'
 
 
@@ -13,8 +14,10 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <BrowserRouter>
-    	<GlobalStyle/>
-   		<Routes/>   		
+      <GlobalState>
+    	  <GlobalStyle/>
+   		  <Router/>
+      </GlobalState>   		
     </BrowserRouter>
   );
 }

@@ -4,13 +4,13 @@ import {url} from '../../constants/urls'
 import {Container} from './styled'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 
 //===================Inicio do componente funcional==========================
 const Deposit = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	const [form, setForm] = useState({
 		name:'',
 		cpf:'',
@@ -22,10 +22,10 @@ const Deposit = ()=>{
 		const token = localStorage.getItem('token')
 
 		if(token === null){
-			history.push('/')
+			history('/')
 		}
 
-	}, [history])
+	}, [])
 
 
 

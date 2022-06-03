@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 const Container = styled.div`
@@ -14,14 +14,14 @@ const Container = styled.div`
 
 
 const Header = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	return<Container>
-			<button onClick={()=> history.push('/balance')}>Saldo</button>
-			<button onClick={()=> history.push('/statement')}>Extrato</button>
-			<button onClick={()=> history.push('/pay')}>Pagamentos</button>
-			<button onClick={()=> history.push('/signup')}>Criar conta</button>
-			<button onClick={()=> history.push('/transfer')}>Transferências</button>
-			<button onClick={()=> history.push('/deposit')}>Deposito</button>
+			<button onClick={()=> history('/balance')}>Saldo</button>
+			<button onClick={()=> history('/statement')}>Extrato</button>
+			<button onClick={()=> history('/pay')}>Pagamentos</button>
+			<button onClick={()=> history('/signup')}>Criar conta</button>
+			<button onClick={()=> history('/transfer')}>Transferências</button>
+			<button onClick={()=> history('/deposit')}>Deposito</button>
 		  </Container>
 }
 export default Header

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
 
@@ -27,21 +27,21 @@ const Container = styled.div`
 
 //===============================Component==========================
 const Home = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 
 
 	useEffect(()=>{
 		const token = localStorage.getItem('token')
 
 		if(token){
-			history.push('/balance')
+			history('/balance')
 		}
 
-	}, [history])
+	}, [])
 
 	return<Container>
 			<h1>Bem vindos ao Labebank</h1>
-			<div onClick={()=> history.push('/login')}>Acessar</div>
+			<div onClick={()=> history('/login')}>Acessar</div>
 		  </Container>
 }
 export default Home

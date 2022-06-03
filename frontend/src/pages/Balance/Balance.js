@@ -4,14 +4,14 @@ import {url} from '../../constants/urls'
 import {Container} from './styled'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 //==========================Component=======================
 const Home = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	const [form, setForm] = useState({
 		name:'',
 		cpf:''
@@ -21,10 +21,10 @@ const Home = ()=>{
 		const token = localStorage.getItem('token')
 
 		if(token === null){
-			history.push('/')
+			history('/')
 		}
 
-	}, [history])
+	}, [])
 
 
 	const onChange = (e)=>{

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {useState, useEffect} from 'react'
-import {useHistory, Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
 import { url } from '../../constants/urls'
 import axios from 'axios'
@@ -40,7 +40,7 @@ const Header = styled.header`
 
 
 const Login = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	const [form, setForm] = useState({
 		cpf:'',
 		password:''
@@ -51,10 +51,10 @@ const Login = ()=>{
 		const token = localStorage.getItem('token')
 
 		if(token){
-			history.push('/balance')
+			history('/balance')
 		}
 
-	}, [history])
+	}, [])
 
 
 
@@ -74,7 +74,7 @@ const Login = ()=>{
 		}
 		axios.post(`${url}/accounts/login`, body).then(res=>{
 			localStorage.setItem('token', res.data)
-			history.push('/balance')
+			history('/balance')
 		}).catch(err=>{
 			alert(err.response.data)
 		})
@@ -84,7 +84,7 @@ const Login = ()=>{
 //=========================Render=======================================
 	return<div>
 			  <Header>
-				<img src={BackIcon} onClick={()=> history.push('/')} alt=''/>
+				<img src={BackIcon} onClick={()=> history('/')} alt=''/>
 			  </Header>
 			  <Container>
 				<form onSubmit={register} >

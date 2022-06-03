@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {Container, Card} from './styled'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {url} from '../../constants/urls'
 import axios from 'axios'
 
@@ -11,7 +11,7 @@ import axios from 'axios'
 
 //==========================Component=======================
 const Statement = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	const [transaction, setTransaction] = useState([])
 	const [form, setForm] = useState({
 		name:'',
@@ -23,10 +23,10 @@ const Statement = ()=>{
 		const token = localStorage.getItem('token')
 
 		if(token === null){
-			history.push('/')
+			history('/')
 		}
 
-	}, [history])
+	}, [])
 
 
 	const onChange = (e)=>{

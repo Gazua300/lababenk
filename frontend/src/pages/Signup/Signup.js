@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {useState} from 'react'
 import axios from 'axios'
-import {useHistory} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackIcon from '../../img/back1.jpeg'
 import {url} from '../../constants/urls'
 
@@ -41,7 +41,7 @@ const Header = styled.header`
 
 
 const Login = ()=>{
-	const history = useHistory()
+	const history = useNavigate()
 	const [form, setForm] = useState({
 		name:'',
 		cpf:'',
@@ -75,7 +75,7 @@ const Login = ()=>{
 		}else{
 			axios.post(`${url}/accounts/create`, body).then(res=>{
 				localStorage.setItem('token', res.data)
-				history.push('/balance')
+				history('/balance')
 			}).catch(err=>{
 				alert(err.response.data)
 			})
@@ -86,7 +86,7 @@ const Login = ()=>{
 //=========================Render=======================================
 	return<div>
 			<Header>
-				<img src={BackIcon} onClick={()=> history.goBack()} alt=''/>
+				<img src={BackIcon} onClick={()=> history(-1)} alt=''/>
 			</Header>
 		  <Container>
 			<h3>Cadastre-se</h3>
