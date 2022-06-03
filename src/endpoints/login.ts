@@ -8,16 +8,16 @@ export const login =  async(req:Request, res:Response):Promise<void>=>{
 
   try{
 
-    const { cpf, password } = req.body
+    const { email, cpf, password } = req.body
 
-    if(!cpf || !password){
+    if(!email || !cpf || !password){
       statusCode = 401
       throw new Error('Preencha os campos')
     }
 
 
     const [client] = await connection('labebank').where({
-      cpf
+      email
     })
 
     if(!client){
@@ -26,18 +26,21 @@ export const login =  async(req:Request, res:Response):Promise<void>=>{
     }
 
     const compare = new Authenticate().compare(password, client.password)
+    const compareCpf = new Authenticate().compare(String(cpf), client.cpf)
     const token = new Authenticate().token(cpf)
 
-
     if(!compare){
-      statusCode = 401
-      throw new Error('Cliente não encontrado!')
+      statusCode = 404
+      throw new Error('Senha incorreta!')
     }
 
-    const email = client.email
+    if(!compareCpf){
+      statusCode = 404
+      throw new Error('Cpf inválido!')
+    }
 
 
-    res.status(200).send({ email, token: token})
+    res.status(200).send(token)
   }catch(error:any){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }

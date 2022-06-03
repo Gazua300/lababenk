@@ -8,16 +8,24 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
 
   try{
 
-    const { name, cpf, recipientName, recipientCpf, value } = req.body
+    const { email, cpf, recipientName, recipientCpf, value } = req.body
+    const auth = new Authenticate()
+    const id = auth.generateId()
+    const anotherId = auth.generateId()
 
-    if(!name || !cpf || !recipientName || !recipientCpf || !value){
+    if(!email || !cpf || !recipientName || !recipientCpf || !value){
       statusCode = 401
       throw new Error('Preencha os campos!')
     }
 
+    if(recipientCpf === cpf){
+      statusCode = 401
+      throw new Error('Os CPFs do depositante e destinatário são os mesmos!')
+    }
+
 
     const [client] = await connection('labebank').where({
-      cpf
+      email
     })
 
     if(!client){
@@ -25,49 +33,58 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
       throw new Error('Cliente não encontrado!')
     }
 
-    if(name !== client.name){
-      statusCode = 403
-      throw new Error('Dados inválidos!')
+    if(!auth.compare(String(cpf), client.cpf)){
+      statusCode = 404
+      throw new Error('Cliente não encontrado!')
     }
 
 
+    const recipient = await connection('labebank')
 
-    const [recipient] = await connection('labebank').where({
-      cpf: recipientCpf
+    const [cpfFound] = recipient.filter(client=>{
+      return auth.compare(String(recipientCpf), client.cpf)
     })
 
-    if(!recipient){
+    if(!cpfFound){
       statusCode = 404
-      throw new Error('Cliente para o qual será feita a tranferência não foi encontrado.')
+      throw new Error('Destinatário do despósito não encontrado!')
     }
 
-    if(recipientName !== recipient.name){
-      statusCode = 403
-      throw new Error('Dados inválidos!')
+    if(cpfFound.name !== recipientName){
+      statusCode = 404
+      throw new Error('Destinatário do despósito não encontrado!')
     }
 
-
-
+    
+    
+    
     await connection('labebank').update({
       balance: client.balance - value
     }).where({
-      cpf
+      cpf: client.cpf
     })
 
     await connection('labebank').update({
-      balance: recipient.balance + value
+      balance: cpfFound.balance + value
     }).where({
-      cpf: recipientCpf
+      cpf: cpfFound.cpf
     })
 
-    const id = new Authenticate().generateId()
-
+    
     await connection('labebank_statement').insert({
       id,
       value,
       date: new Date(),
-      description: 'Transferência',
-      client_id: cpf
+      description: `Transferência de R$ ${value}.00 para conta correspondente ao email ${cpfFound.email}`,
+      client_id: client.cpf
+    })
+
+    await connection('labebank_statement').insert({
+      id: anotherId,
+      value,
+      date: new Date(),
+      description: `Valor de R$ ${value}.00 recebido por transferência da conta correspondente ao email ${client.email}`,
+      client_id: cpfFound.cpf
     })
 
 

@@ -13,6 +13,9 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 		const birthDate = new Date(`${year}-${month}-${day}`)
 		const millisecondsAge = Date.now() - birthDate.getTime()
 		const age = millisecondsAge / 1000 / 60 / 60 /24 / 365
+    const auth = new Authenticate()
+    const id = auth.generateId()
+    const token = auth.token(id)
 
 
     if(!name || !cpf ||!email || !initialDate || !password || !passwordConf){
@@ -34,46 +37,36 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
       statusCode = 403
       throw new Error('CPF inválido!')
     }
+    
+    
+    const clients = await connection('labebank')
 
-    const [user] = await connection('labebank').where({
-      cpf
-    })
-
-    if(user){
-      statusCode = 401
-      throw new Error('Conta já existe em nossos registros')
-    }
-
-    const [clientEmail] = await connection('labebank').where({
-      email
-    })
-
-    if(clientEmail){
-      statusCode = 401
-      throw new Error('Conta já existe em nossos registros')
-    }
+    clients.map(client=>{
+      if(email === client.email || auth.compare(String(cpf), client.cpf)){
+        statusCode = 401
+        throw new Error('Conta já existe nos registros')
+      }
+    })    
+    
 
     if(password !== passwordConf){
       statusCode = 401
       throw new Error('As senhas não correspondem!')
     }
-
-    const id = new Authenticate().generateId()
-    const hash = new Authenticate().hash(password)
-    const token = new Authenticate().token(id)
+    
 
 		await connection('labebank').insert({
       id,
 			name,
-			cpf,
+			cpf: auth.hash(String(cpf)),
       email,
 			birth_date: birthDate,
-			balance: 660,
-      password: hash
+			balance: 0,
+      password: auth.hash(password)
 		})
 
 
-    res.status(200).send({ email, token: token})
+    res.status(200).send(token)
 	}catch(error: any){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}

@@ -5,12 +5,12 @@ POST http://localhost:3003/accounts/create
 Content-Type: application/json
 
 {
-  "name": "Vanires",
-  "cpf": 123456789111,
-  "email": "nena_esta@gmail.com",
+  "name": "Ana Novais",
+  "cpf": 12345678913,
+  "email": "vo@gmail.com",
   "password": "senha",
   "passwordConf": "senha",
-  "initialDate": "2000-03-26"
+  "initialDate": "1933-03-26"
 }
 
 ###
@@ -18,8 +18,8 @@ POST http://localhost:3003/accounts/balance
 Content-Type: application/json
 
 {
-  "name": "Vanires",
-  "cpf": "1234567892"
+  "email": "nena_esta@gmail.com",
+  "cpf": 12345678911
 }
 
 ###
@@ -27,8 +27,8 @@ POST http://localhost:3003/accounts/statement
 Content-Type: application/json
 
 {
-  "name": "Flamarion",
-  "cpf": "1234567891"
+  "email": "nena_esta@gmail.com",
+  "cpf": 12345678911
 }
 
 ###
@@ -36,10 +36,10 @@ POST http://localhost:3003/accounts/payment
 Content-Type: application/json
 
 {
-  "name": "Flamarion",
-  "cpf": "1234567891",
+  "email": "nena_esta@gmail.com",
+  "cpf": "12345678911",
   "initialDate": "10/12/2022",
-  "value": 80,
+  "value": 100,
   "description": "pagamento de prestação de cartão de crédito"
 }
 
@@ -48,8 +48,8 @@ POST http://localhost:3003/accounts/deposit
 Content-Type: application/json
 
 {
-  "name": "Vanires",
-  "cpf": "1234567892",
+  "email": "nena_esta@gmail.com",
+  "cpf": "12345678911",
   "value": 100
 }
 
@@ -58,7 +58,8 @@ POST http://localhost:3003/accounts/login
 Content-Type: application/json
 
 {
-  "cpf": 1234567892,
+  "email": "nena_esta@gmail.com",
+  "cpf": 12345678911,
   "password": "senha"
 }
 
@@ -67,9 +68,9 @@ POST http://localhost:3003/accounts/transfer
 Content-Type: application/json
 
 {
-  "name":"Flamarion",
-  "cpf": 1234567891,
-  "recipientName": "Vanires",
-  "recipientCpf": 1234567892,
-  "value": 100
+  "email":"nena_esta@gmail.com",
+  "cpf": 12345678911,
+  "recipientName": "Ana Novais",
+  "recipientCpf": 12345678910,
+  "value": 20
 }

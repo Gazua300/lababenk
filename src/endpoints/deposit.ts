@@ -8,15 +8,17 @@ export const deposit = async(req:Request, res:Response)=>{
 
   try{
 
-    const { name, cpf, value} = req.body
+    const { email, cpf, value} = req.body
+    const auth = new Authenticate()
 
-    if(!name || !cpf || !value){
+
+    if(!email || !cpf || !value){
       statusCode = 401
       throw new Error('Preencha os campos.')
     }
 
     const [user] = await connection('labebank').where({
-      cpf
+      email
     })
 
     if(!user){
@@ -24,16 +26,16 @@ export const deposit = async(req:Request, res:Response)=>{
       throw new Error('Cliente não encontrado!')
     }
 
-    if(user.name !== name){
+    if(!auth.compare(String(cpf), user.cpf)){
       statusCode = 404
-      throw new Error('Dados inválidos!')
+      throw new Error('Cpf inválido!')
     }
 
 
     await connection('labebank').update({
       balance: user.balance + value
     }).where({
-      cpf
+      cpf: user.cpf
     })
 
     const id = new Authenticate().generateId()
@@ -43,7 +45,7 @@ export const deposit = async(req:Request, res:Response)=>{
       value,
       date: new Date(),
       description: 'Deposito',
-      client_id: cpf
+      client_id: user.cpf
     })
 
     res.status(200).send(`Deposito de ${value} efetuado com sucesso. Saldo atual: ${user.balance + value}`)
