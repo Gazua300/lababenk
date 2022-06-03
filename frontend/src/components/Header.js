@@ -6,7 +6,7 @@ const Container = styled.div`
 	text-align: center;
 	button{
 		border-radius: 10px;
-		background-color: lightgray;
+		background-image: linear-gradient(to top, gray, whitesmoke);
 		cursor: pointer;
 		margin: 5px;
 	}

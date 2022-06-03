@@ -17,8 +17,21 @@ export const Container = styled.div`
 		gap: 15px;
 		margin: 10px;
 		input[type=date]{
-			width: 17vw;
+			width: 19vw;
 		}
+		input{
+			background: transparent;
+			padding: 5px;
+			border-radius: 10px;
+		}
+	}
+	button{
+		width: 210px;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 2px;
+		background-image: linear-gradient(gray, whitesmoke);
+		margin-bottom: 10px;
 	}
 
 `

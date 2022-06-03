@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 const Payments = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
-		name:'',
+		email:'',
 		cpf:'',
 		initialDate:'',
 		value:'',
@@ -39,7 +39,7 @@ const Payments = ()=>{
 		e.preventDefault()
 
 		const body = {
-			name: form.name,
+			email: form.email,
 			cpf: Number(form.cpf),
 			initialDate: form.initialDate,
 			value: form.value,
@@ -49,7 +49,7 @@ const Payments = ()=>{
 		axios.post(`${url}/accounts/payment`, body).then(res=>{
 			alert('Pagamento efetuado com sucesso!')
 			setForm({
-				name:'',
+				email:'',
 				cpf:'',
 				initialDate:'',
 				value:'',
@@ -67,8 +67,8 @@ const Payments = ()=>{
 			 <Container>
 				<h3>Pagamentos</h3>
 				<form onSubmit={pay}>
-					<input type='text' name='name' value={form.name} onChange={onChange}
-					 placeholder='Nome e sobrenome' required/>
+					<input type='text' name='email' value={form.email} onChange={onChange}
+					 placeholder='nome@email.com' required/>
 					<input type='number' name='cpf' value={form.cpf} onChange={onChange}
 					 placeholder='CPF(somente números)' required/>
 					<input type='date' name='initialDate' value={form.initialDate} onChange={onChange}

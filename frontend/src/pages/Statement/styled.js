@@ -15,6 +15,19 @@ export const Container = styled.div`
 		flex-direction: column;
 		align-items: center;
 		gap: 15px;
+		input{
+			background: transparent;
+			padding: 5px;
+			border-radius: 10px;
+		}
+	}
+	button{
+		width: 210px;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 2px;
+		background-image: linear-gradient(gray, whitesmoke);
+		margin-bottom: 10px;
 	}
 
 `

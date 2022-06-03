@@ -14,7 +14,7 @@ const Statement = ()=>{
 	const history = useNavigate()
 	const [transaction, setTransaction] = useState([])
 	const [form, setForm] = useState({
-		name:'',
+		email:'',
 		cpf:''
 	})
 
@@ -39,7 +39,7 @@ const Statement = ()=>{
 		e.preventDefault()
 
 		const body = {
-			name: form.name,
+			email: form.email,
 			cpf: Number(form.cpf)
 		}
 
@@ -59,8 +59,8 @@ const Statement = ()=>{
 		  <Container>
 				<h3>Extrato</h3>
 			<form onSubmit={statement}>
-				<input name='name' value={form.name} onChange={onChange}
-				 type='text' placeholder='Nome e sobrenome' autoFocus required />
+				<input name='email' value={form.name} onChange={onChange}
+				 type='email' placeholder='Nome e sobrenome' autoFocus required />
 				<input name='cpf' value={form.cpf} onChange={onChange}
 				 type='number' min='0' placeholder='CPF(somente números)'required/>
 				<button>Consultar</button>

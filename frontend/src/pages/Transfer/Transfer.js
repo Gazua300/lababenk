@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 const Transfer = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
-		name:'',
+		email:'',
 		cpf:'',
 		recipientName:'',
 		recipientCpf:'',
@@ -37,7 +37,7 @@ const Transfer = ()=>{
 		e.preventDefault()
 
 		const body = {
-			name: form.name,
+			email: form.email,
 			cpf: Number(form.cpf),
 			recipientName: form.recipientName,
 			recipientCpf: Number(form.recipientCpf),
@@ -47,7 +47,7 @@ const Transfer = ()=>{
 		axios.post(`${url}/accounts/transfer`, body).then(res=>{
 			alert(res.data)
 			setForm({
-				name:'',
+				email:'',
 				cpf:'',
 				recipientName:'',
 				recipientCpf:'',
@@ -66,8 +66,8 @@ const Transfer = ()=>{
 			 <Container>
 				<h3>Transferências</h3>
 				<form onSubmit={transfer}>
-					<input type='text' name='name' value={form.name} onChange={onChange}
-					 placeholder='Nome e sobrenome' required/>
+					<input type='text' name='email' value={form.email} onChange={onChange}
+					 placeholder='nome@email.com' required/>
 					<input type='number' name='cpf' value={form.cpf}
 					 onChange={onChange} placeholder='CPF(somente números)' required/>
 					<input type='text' name='recipientName' value={form.recipientName}

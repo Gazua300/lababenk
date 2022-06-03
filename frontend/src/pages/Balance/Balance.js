@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 const Home = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
-		name:'',
+		email:'',
 		cpf:''
 	})
 
@@ -37,15 +37,14 @@ const Home = ()=>{
 		e.preventDefault()
 
 		const body = {
-			name: form.name,
+			email: form.email,
 			cpf: Number(form.cpf)
 		}
 
 		axios.post(`${url}/accounts/balance`, body).then(res=>{
-			console.log(res.data)
-			document.getElementById('result').innerHTML = `Seu saldo é ${res.data[0].balance}`
+			document.getElementById('result').innerHTML = `${res.data}`
 		}).catch(err=>{
-			console.log(err.response)
+			alert(err.response.data.message)
 		})
 
 	}
@@ -56,8 +55,8 @@ const Home = ()=>{
 		  <Container>
 				<h3>Consulta de saldo</h3>
 			<form onSubmit={getBalance}>
-				<input name='name' value={form.name} onChange={onChange}
-				 type='text' placeholder='Nome e sobrenome' autoFocus required />
+				<input name='email' value={form.name} onChange={onChange}
+				 type='email' placeholder='nome@email.com' autoFocus required />
 				<input name='cpf' value={form.cpf} onChange={onChange}
 				 type='number' min='0' placeholder='CPF(somente números)'required/>
 				<button>Ver saldo</button>

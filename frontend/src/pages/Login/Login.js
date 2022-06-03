@@ -21,13 +21,21 @@ const Container = styled.div`
 		align-items: center;
 		gap: 15px;
 		margin: 10px;
-		input[type=date]{
-			width: 57vw;
+		input{
+			background: transparent;
+			padding: 5px;
 		}
 	}
 
 	div{
 		margin: 10px;
+	}
+	button{
+		width: 210px;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 2px;
+		background-image: linear-gradient(gray, whitesmoke)
 	}
 
 `
@@ -42,6 +50,7 @@ const Header = styled.header`
 const Login = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
+		email:'',
 		cpf:'',
 		password:''
 	})
@@ -69,6 +78,7 @@ const Login = ()=>{
 		e.preventDefault()
 
 		const body = {
+			email: form.email,
 			cpf: form.cpf,
 			password: form.password
 		}
@@ -89,13 +99,15 @@ const Login = ()=>{
 			  <Container>
 				<form onSubmit={register} >
 				<h3>Acesse sua conta</h3>
+				<input type='email' name='email' value={form.email} onChange={onChange}
+				 placeholder='nome@email.com' required autoFocus/>
 				<input type='number' name='cpf' value={form.cpf} onChange={onChange}
-				 placeholder='CPF(somente números)' required autoFocus/>
+				 placeholder='CPF(somente números)' required/>
 				<input type='password' name='password' value={form.password} onChange={onChange}
 				 placeholder='Senha' required />
 				<button>Acessar</button>
 				</form>
-				<div>Clique <Link to='/signup'>aqui</Link> para abrir sua conta.</div>
+				<div>Clique <Link to='/signup'>aqui</Link> para abrir uma conta.</div>
 			  </Container>
 		  </div>
 }

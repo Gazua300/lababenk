@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const Deposit = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
-		name:'',
+		email:'',
 		cpf:'',
 		value:''
 	})
@@ -39,7 +39,7 @@ const Deposit = ()=>{
 		e.preventDefault()
 
 		const body = {
-			name: form.name,
+			email: form.email,
 			cpf: Number(form.cpf),
 			value: Number(form.value)
 		}
@@ -47,7 +47,7 @@ const Deposit = ()=>{
 		axios.post(`${url}/accounts/deposit`, body).then(res=>{
 			alert(`Seu deposito de R$ ${form.value} foi efetuado com sucesso.`)
 			setForm({
-				name:'',
+				email:'',
 				cpf:'',
 				value:''
 			})
@@ -65,8 +65,8 @@ const Deposit = ()=>{
 			 <Container>
 				<h3>Depositos</h3>
 				<form onSubmit={addCash}>
-					<input type='text' name='name' value={form.name} onChange={onChange}
-					 placeholder='Nome e sobrenome' autoFocus required/>
+					<input type='text' name='email' value={form.email} onChange={onChange}
+					 placeholder='nome@email.com' autoFocus required/>
 					<input type='number' name='cpf' value={form.cpf} onChange={onChange}
 					 placeholder='CPF(somente números)' required/>
 					<input type='number' name='value' value={form.value} onChange={onChange}

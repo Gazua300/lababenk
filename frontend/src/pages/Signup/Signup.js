@@ -23,12 +23,25 @@ const Container = styled.div`
 		gap: 15px;
 		margin: 10px;
 		input[type=date]{
-			width: 17vw;
+			width: 19vw;
+		}
+		input{
+			background: transparent;
+			padding: 5px;
+			border-radius: 10px;
 		}
 	}
 
 	div{
 		margin: 10px;
+	}
+	button{
+		width: 210px;
+		border-radius: 10px;
+		cursor: pointer;
+		padding: 2px;
+		background-image: linear-gradient(gray, whitesmoke);
+		margin-bottom: 10px;
 	}
 
 `
@@ -40,7 +53,7 @@ const Header = styled.header`
 `
 
 
-const Login = ()=>{
+const Signup = ()=>{
 	const history = useNavigate()
 	const [form, setForm] = useState({
 		name:'',
@@ -67,19 +80,16 @@ const Login = ()=>{
 			cpf: Number(form.cpf),
 			email: form.email,
 			initialDate: form.initialDate,
-			password: form.password
+			password: form.password,
+			passwordConf: form.confPassword
 		}
-
-		if(form.cpf.length < 10){
-			alert('Numeração do CPF inválida.!')
-		}else{
-			axios.post(`${url}/accounts/create`, body).then(res=>{
-				localStorage.setItem('token', res.data)
-				history('/balance')
-			}).catch(err=>{
-				alert(err.response.data)
-			})
-		}
+		axios.post(`${url}/accounts/create`, body).then(res=>{
+			localStorage.setItem('token', res.data)
+			history('/balance')
+		}).catch(err=>{
+			alert(err.response.data.message)
+		})
+		
 
 	}
 
@@ -108,4 +118,4 @@ const Login = ()=>{
 		  </Container>
 		  </div>
 }
-export default Login
+export default Signup
