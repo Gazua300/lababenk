@@ -88,7 +88,7 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
     })
 
 
-    res.status(200).send('Transferência realizada com sucesso!')
+    res.status(200).send('Transferência realizada com sucesso.')
   }catch(error:any){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }
