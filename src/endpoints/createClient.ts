@@ -18,21 +18,30 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
     const token = auth.token(id)
 
 
-    if(!name || !cpf ||!email || !initialDate || !password || !passwordConf){
+    if(
+      !name || 
+      !cpf ||
+      !email ||
+      !initialDate ||
+      !password ||
+      !passwordConf
+      ){
       statusCode = 401
       throw new Error('Preencha os campos!')
     }
 
-		if(age < 18){
-			statusCode = 401
-			throw new Error('Necessário ser maior de idade!')
 
+    
+		if(age < 18){
+      statusCode = 401
+			throw new Error('Necessário ser maior de idade!')
+      
 		}
 
     var arrCpf = String(cpf).split('').map(num=>{
       return Number(num)
     })
-
+    
     if(arrCpf.length !== 11){
       statusCode = 403
       throw new Error('CPF inválido!')
@@ -42,7 +51,10 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
     const clients = await connection('labebank')
 
     clients.map(client=>{
-      if(email === client.email || auth.compare(String(cpf), client.cpf)){
+      if(
+        email === client.email ||
+        auth.compare(String(cpf), client.cpf)
+        ){
         statusCode = 401
         throw new Error('Conta já existe nos registros')
       }
