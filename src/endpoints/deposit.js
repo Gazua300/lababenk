@@ -1,9 +1,8 @@
-import { connection } from '../connection/connection'
-import { Request, Response } from 'express'
-import { Authenticate } from '../services/Authenticate'
+const connection = require('../connection/connection')
+const Authenticate = require('../services/Authenticate')
 
 
-export const deposit = async(req:Request, res:Response)=>{
+const deposit = async(req, res)=>{
   let statusCode = 400
 
   try{
@@ -49,7 +48,9 @@ export const deposit = async(req:Request, res:Response)=>{
     })
 
     res.status(200).send(`Deposito de ${value} efetuado com sucesso. Saldo atual: ${user.balance + value}`)
-  }catch(error:any){
+  }catch(error){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }
 }
+
+module.exports = deposit

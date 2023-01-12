@@ -1,13 +1,13 @@
-import express from 'express'
-import cors from 'cors'
-import { showClients } from './endpoints/showClients'
-import { createClient } from './endpoints/createClient'
-import { getStatement } from './endpoints/getStatement'
-import { getBalance } from './endpoints/getBalance'
-import { payment } from './endpoints/payment'
-import { deposit } from './endpoints/deposit'
-import { login } from './endpoints/login'
-import { transfer } from './endpoints/transfer'
+const express = require('express')
+const cors = require('cors')
+const showClients = require('./endpoints/showClients')
+const createClient = require('./endpoints/createClient')
+const getStatement = require('./endpoints/getStatement')
+const getBalance = require('./endpoints/getBalance')
+const payment = require('./endpoints/payment')
+const deposit = require('./endpoints/deposit')
+const login = require('./endpoints/login')
+const transfer = require('./endpoints/transfer')
 
 
 

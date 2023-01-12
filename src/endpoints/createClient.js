@@ -1,9 +1,8 @@
-import { connection } from '../connection/connection'
-import { Request, Response } from 'express'
-import { Authenticate } from '../services/Authenticate'
+const connection = require('../connection/connection')
+const Authenticate = require('../services/Authenticate')
 
 
-export const createClient = async(req:Request, res:Response):Promise<void>=>{
+const createClient = async(req, res)=>{
   var statusCode = 400
 
 	try{
@@ -79,7 +78,9 @@ export const createClient = async(req:Request, res:Response):Promise<void>=>{
 
 
     res.status(200).send(token)
-	}catch(error: any){
+	}catch(error){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}
 }
+
+module.exports = createClient

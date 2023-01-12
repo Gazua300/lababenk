@@ -1,9 +1,8 @@
-import { connection } from '../connection/connection'
-import { Request, Response } from 'express'
-import { Authenticate } from '../services/Authenticate'
+const connection = require('../connection/connection')
+const Authenticate = require('../services/Authenticate')
 
 
-export const transfer = async(req:Request, res:Response):Promise<void>=>{
+const transfer = async(req, res)=>{
   let statusCode = 400
 
   try{
@@ -89,7 +88,9 @@ export const transfer = async(req:Request, res:Response):Promise<void>=>{
 
 
     res.status(200).send('Transferência realizada com sucesso.')
-  }catch(error:any){
+  }catch(error){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }
 }
+
+module.exports = transfer

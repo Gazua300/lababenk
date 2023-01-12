@@ -1,9 +1,8 @@
-import { connection } from '../connection/connection'
-import { Request, Response } from 'express'
-import { Authenticate } from '../services/Authenticate'
+const connection = require('../connection/connection')
+const Authenticate = require('../services/Authenticate')
 
 
-export const payment = async(req:Request, res:Response):Promise<void>=>{
+const payment = async(req, res)=>{
   let statusCode = 400
   try{
 
@@ -61,7 +60,9 @@ export const payment = async(req:Request, res:Response):Promise<void>=>{
     })
 
     res.status(200).send(`Pagamento de ${value} efetuado`)
-	}catch(error: any){
+	}catch(error){
 		res.status(statusCode).send({message: error.message})
 	}
 }
+
+module.exports = payment
