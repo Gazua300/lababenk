@@ -29,7 +29,6 @@ const createClient = async(req, res)=>{
       throw new Error('Preencha os campos!')
     }
 
-
     
 		if(age < 18){
       statusCode = 401
@@ -57,7 +56,13 @@ const createClient = async(req, res)=>{
         statusCode = 401
         throw new Error('Conta já existe nos registros')
       }
-    })    
+    })
+    
+    
+    if(password.length < 6){
+      statusCode = 401
+      throw new Error('Senha deve ter o mínimo de 6 caractéres')
+    }
     
 
     if(password !== passwordConf){
@@ -77,7 +82,7 @@ const createClient = async(req, res)=>{
 		})
 
 
-    res.status(200).send(token)
+    res.status(200).send({ token, id })
 	}catch(error){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}

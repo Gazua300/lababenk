@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
+
 const showClients = require('./endpoints/showClients')
 const createClient = require('./endpoints/createClient')
+const getClientById = require('./endpoints/getClientById')
 const getStatement = require('./endpoints/getStatement')
 const getBalance = require('./endpoints/getBalance')
 const payment = require('./endpoints/payment')
@@ -19,6 +21,7 @@ app.use(cors())
 
 
 app.get('/accounts', showClients)
+app.get('/accounts/:id', getClientById)
 app.post('/accounts/statement', getStatement)
 app.post('/accounts/create', createClient)
 app.post('/accounts/balance', getBalance)

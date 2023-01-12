@@ -6,13 +6,15 @@ const payment = async(req, res)=>{
   let statusCode = 400
   try{
 
-		const {email, cpf, initialDate, value, description} = req.body
+		const {password, cpf, initialDate, value, description, token} = req.body
 		const [day, month, year] = initialDate.split('/')
 		const date = new Date(`${year}-${month}-${day}`)
     const auth = new Authenticate()
+    const tokenData = auth.tokenData(token)
+    
 
 
-    if(!email || !cpf || !initialDate || !value || !description){
+    if(!password || !cpf || !initialDate || !value || !description){
       statusCode = 401
       throw new Error('Preencha os campos.')
     }
@@ -24,7 +26,7 @@ const payment = async(req, res)=>{
 
 
     const [user] = await connection('labebank').where({
-      email
+      id: tokenData.payload
     })
 
     if(!user){
@@ -35,6 +37,12 @@ const payment = async(req, res)=>{
     if(!auth.compare(String(cpf), user.cpf)){
       statusCode = 404
       throw new Error('Cliente não encontrado!')
+    }
+
+
+    if(!auth.compare(password, user.password)){
+      statusCode = 404
+      throw new Error('Cliente não encontrado')
     }
 
 

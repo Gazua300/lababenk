@@ -7,24 +7,26 @@ const transfer = async(req, res)=>{
 
   try{
 
-    const { email, cpf, recipientName, recipientCpf, value } = req.body
+    const { password, cpf, recipientName, recipientCpf, value, token } = req.body
     const auth = new Authenticate()
     const id = auth.generateId()
     const anotherId = auth.generateId()
+    const tokenData = auth.tokenData(token)
 
-    if(!email || !cpf || !recipientName || !recipientCpf || !value){
+
+    if(!password || !cpf || !recipientName || !recipientCpf || !value){
       statusCode = 401
       throw new Error('Preencha os campos!')
     }
 
     if(recipientCpf === cpf){
       statusCode = 401
-      throw new Error('Os CPFs do depositante e destinatário são os mesmos!')
+      throw new Error('Os CPFs do depositante e destinatário são os mesmos')
     }
 
 
     const [client] = await connection('labebank').where({
-      email
+      id: tokenData.payload
     })
 
     if(!client){
@@ -34,14 +36,14 @@ const transfer = async(req, res)=>{
 
     if(!auth.compare(String(cpf), client.cpf)){
       statusCode = 404
-      throw new Error('Cliente não encontrado!')
+      throw new Error('Cliente não encontrado')
     }
 
 
     const recipient = await connection('labebank')
 
-    const [cpfFound] = recipient.filter(client=>{
-      return auth.compare(String(recipientCpf), client.cpf)
+    const [cpfFound] = recipient.filter(rcpt=>{
+      return auth.compare(String(recipientCpf), rcpt.cpf)
     })
 
     if(!cpfFound){
@@ -54,7 +56,11 @@ const transfer = async(req, res)=>{
       throw new Error('Destinatário do despósito não encontrado!')
     }
 
-    
+
+    if(!auth.compare(password, client.password)){
+      statusCode = 404
+      throw new Error('Senha inválida')
+    }    
     
     
     await connection('labebank').update({
@@ -74,7 +80,7 @@ const transfer = async(req, res)=>{
       id,
       value,
       date: new Date(),
-      description: `Transferência de R$ ${value}.00 para conta correspondente ao email ${cpfFound.email}`,
+      description: `Transferência de R$ ${value.toFixed(2)} para conta de ${recipientName}`,
       client_id: client.cpf
     })
 
@@ -82,7 +88,7 @@ const transfer = async(req, res)=>{
       id: anotherId,
       value,
       date: new Date(),
-      description: `Valor de R$ ${value}.00 recebido por transferência da conta correspondente ao email ${client.email}`,
+      description: `Valor de R$ ${value.toFixed(2)} recebido por transferência da conta de ${client.name}`,
       client_id: cpfFound.cpf
     })
 

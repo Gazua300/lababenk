@@ -7,29 +7,36 @@ const getStatement = async(req, res)=>{
 
   try{
 
-	  const { email, cpf } = req.body
+	  const { cpf, password, token } = req.body
     const auth = new Authenticate()
+    const tokenData = auth.tokenData(token)
 
 
-    if(!email || !cpf){
+    if(!password || !cpf){
       statusCode = 401
       throw new Error('Preencha os campos')
     }
      
      
     const [client] = await connection('labebank').where({
-      email
+      id: tokenData.payload
     })
      
     if(!client){
       statusCode = 404
-      throw new Error('Cliente não encontrado!')
+      throw new Error('Cliente não encontrado')
     }
       
      
     if(!auth.compare(String(cpf), client.cpf)){
       statusCode = 403
-      throw new Error('Cliente não econtrado!')
+      throw new Error('Cliente não econtrado')
+    }
+
+    
+    if(!auth.compare(password, client.password)){
+      statusCode = 404
+      throw new Error('Cliente não encontrado')
     }
 
      

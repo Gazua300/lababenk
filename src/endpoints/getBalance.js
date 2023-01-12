@@ -11,18 +11,14 @@ const getBalance = async(req, res)=>{
     const { cpf, password, token } = req.body
     const auth = new Authenticate()
     const tokenData = new Authenticate().tokenData(token)
+    
 
     if(!password || !cpf){
       statusCode = 401
       throw new Error('Preencha os campos')
     }
 
-    if(!token){
-      statusCode =  401
-      throw new Error('Token ausente, malformado ou expirado. Neste caso, por medidas de segurança você deve efetuar login novamente')
-    }
-
-
+    
     const [client] = await connection('labebank').where({
       id: tokenData.payload
     })

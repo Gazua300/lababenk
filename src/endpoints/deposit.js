@@ -7,17 +7,18 @@ const deposit = async(req, res)=>{
 
   try{
 
-    const { email, cpf, value} = req.body
+    const { password, cpf, value, token} = req.body
     const auth = new Authenticate()
-
-
-    if(!email || !cpf || !value){
+    const tokenData = auth.tokenData(token)
+    
+    
+    if(!password || !cpf || !value){
       statusCode = 401
       throw new Error('Preencha os campos.')
     }
 
     const [user] = await connection('labebank').where({
-      email
+      id: tokenData.payload
     })
 
     if(!user){
@@ -27,7 +28,13 @@ const deposit = async(req, res)=>{
 
     if(!auth.compare(String(cpf), user.cpf)){
       statusCode = 404
-      throw new Error('Cpf inválido!')
+      throw new Error('Cliente não encontrado')
+    }
+
+
+    if(!auth.compare(password, user.password)){
+      statusCode = 404
+      throw new Error('Cliente não encontrado')
     }
 
 

@@ -34,7 +34,7 @@ const login =  async(req, res)=>{
     }
 
 
-    res.status(200).send(token)
+    res.status(200).send({ token, id: client.id })
   }catch(error){
     res.status(statusCode).send(error.message || error.sqlMessage)
   }
