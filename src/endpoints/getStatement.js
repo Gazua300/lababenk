@@ -1,5 +1,6 @@
 const connection = require('../connection/connection')
 const Authenticate = require('../services/Authenticate')
+const auth_token = require('../services/auth_token')
 
 
 const getStatement = async(req, res)=>{
@@ -7,24 +8,13 @@ const getStatement = async(req, res)=>{
 
   try{
 
-	  const { cpf, password, token } = req.body
+    const client = await auth_token(req)
+	  const { cpf, password } = req.body
     const auth = new Authenticate()
-    const tokenData = auth.tokenData(token)
-
 
     if(!password || !cpf){
       statusCode = 401
       throw new Error('Preencha os campos')
-    }
-     
-     
-    const [client] = await connection('labebank').where({
-      id: tokenData.payload
-    })
-     
-    if(!client){
-      statusCode = 404
-      throw new Error('Cliente não encontrado')
     }
       
      

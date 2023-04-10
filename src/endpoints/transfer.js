@@ -1,5 +1,7 @@
 const connection = require('../connection/connection')
 const Authenticate = require('../services/Authenticate')
+const auth_token = require('../services/auth_token')
+
 
 
 const transfer = async(req, res)=>{
@@ -7,11 +9,11 @@ const transfer = async(req, res)=>{
 
   try{
 
-    const { password, cpf, recipientName, recipientCpf, value, token } = req.body
+    const client = await auth_token(req)
+    const { password, cpf, recipientName, recipientCpf, value } = req.body
     const auth = new Authenticate()
     const id = auth.generateId()
     const anotherId = auth.generateId()
-    const tokenData = auth.tokenData(token)
 
 
     if(!password || !cpf || !recipientName || !recipientCpf || !value){
@@ -24,15 +26,6 @@ const transfer = async(req, res)=>{
       throw new Error('Os CPFs do depositante e destinatário são os mesmos')
     }
 
-
-    const [client] = await connection('labebank').where({
-      id: tokenData.payload
-    })
-
-    if(!client){
-      statusCode = 404
-      throw new Error('Cliente não encontrado!')
-    }
 
     if(!auth.compare(String(cpf), client.cpf)){
       statusCode = 404

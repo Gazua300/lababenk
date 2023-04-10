@@ -1,5 +1,6 @@
 const connection = require('../connection/connection')
 const Authenticate = require('../services/Authenticate')
+const auth_token = require('../services/auth_token')
 
 
 const deposit = async(req, res)=>{
@@ -7,9 +8,10 @@ const deposit = async(req, res)=>{
 
   try{
 
-    const { password, cpf, value, token} = req.body
+
+    const user = await auth_token(req)
+    const { password, cpf, value } = req.body
     const auth = new Authenticate()
-    const tokenData = auth.tokenData(token)
     
     
     if(!password || !cpf || !value){
@@ -17,14 +19,6 @@ const deposit = async(req, res)=>{
       throw new Error('Preencha os campos.')
     }
 
-    const [user] = await connection('labebank').where({
-      id: tokenData.payload
-    })
-
-    if(!user){
-      statusCode = 404
-      throw new Error('Cliente não encontrado!')
-    }
 
     if(!auth.compare(String(cpf), user.cpf)){
       statusCode = 404

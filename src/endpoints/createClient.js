@@ -82,7 +82,7 @@ const createClient = async(req, res)=>{
 		})
 
 
-    res.status(200).send({ token, id })
+    res.status(200).send(token)
 	}catch(error){
 		res.status(statusCode).send({message: error.message || error.sqlMessage})
 	}

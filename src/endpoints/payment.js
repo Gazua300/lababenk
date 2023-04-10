@@ -1,38 +1,31 @@
 const connection = require('../connection/connection')
 const Authenticate = require('../services/Authenticate')
+const auth_token = require('../services/auth_token')
 
 
 const payment = async(req, res)=>{
   let statusCode = 400
   try{
 
-		const {password, cpf, initialDate, value, description, token} = req.body
-		const [day, month, year] = initialDate.split('/')
-		const date = new Date(`${year}-${month}-${day}`)
+    const user = await auth_token(req)
+		const {password, cpf, initialDate, value, description } = req.body
+    const convert = initialDate.split('/')
+    const date = `${convert[2]}-${convert[1]}-${convert[0]}`
     const auth = new Authenticate()
-    const tokenData = auth.tokenData(token)
-    
+        
 
 
     if(!password || !cpf || !initialDate || !value || !description){
       statusCode = 401
       throw new Error('Preencha os campos.')
     }
+    
 
-    if(date.getTime() < Date.now()){
+    if(new Date(initialDate).getTime() < Date.now()){
       statusCode = 403
       throw new Error('Data do pagagmento não pode ser inferior a data atual!')
     }
-
-
-    const [user] = await connection('labebank').where({
-      id: tokenData.payload
-    })
-
-    if(!user){
-      statusCode = 404
-      throw new Error('Cliente não encontrado.')
-    }
+    
 
     if(!auth.compare(String(cpf), user.cpf)){
       statusCode = 404
@@ -58,7 +51,7 @@ const payment = async(req, res)=>{
     })
 
     const id = new Authenticate().generateId()
-
+    
     await connection('labebank_statement').insert({
       id,
       value,
